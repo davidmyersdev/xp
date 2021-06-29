@@ -1,21 +1,29 @@
-import { nodeResolve } from '@rollup/plugin-node-resolve'
-import typescript from '@rollup/plugin-typescript'
+import { babel } from '@rollup/plugin-babel'
+import commonjs from '@rollup/plugin-commonjs'
+import resolve from '@rollup/plugin-node-resolve'
 
 export default {
   input: 'src/index.ts',
   output: [
     {
-      dir: 'dist/es',
-      format: 'es',
-    },
-    {
       dir: 'dist/cjs',
       format: 'cjs',
       exports: 'auto',
     },
+    {
+      dir: 'dist/es',
+      format: 'es',
+    },
+    {
+      dir: 'dist/iife',
+      format: 'iife',
+      globals: {},
+      name: 'RollupTypeScriptBabel',
+    }
   ],
   plugins: [
-    nodeResolve(),
-    typescript(),
+    resolve({ extensions: ['.ts'] }),
+    commonjs(),
+    babel({ extensions: ['.ts'], babelHelpers: 'runtime' }),
   ],
 }
