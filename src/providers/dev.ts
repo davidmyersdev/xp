@@ -1,17 +1,5 @@
-import fetch from 'cross-fetch'
-
-export interface Article {
-  body_markdown: string,
-  title: string,
-  canonical_url?: string,
-  description?: string,
-  id?: string,
-  main_image?: string,
-  organization_id?: string,
-  published?: boolean,
-  series?: string,
-  tags?: string[],
-}
+import axios from 'axios'
+import { DevArticle } from '../types/arms'
 
 const apiUrl = 'https://dev.to/api'
 const buildHeaders = (apiKey: string) => {
@@ -21,22 +9,18 @@ const buildHeaders = (apiKey: string) => {
   }
 }
 
-export const create = async (apiKey: string, article: Article) => {
+export const create = async (apiKey: string, article: DevArticle): Promise<DevArticle> => {
   const url = `${apiUrl}/articles`
-  const method = 'post'
   const headers = buildHeaders(apiKey)
-  const body = JSON.stringify({ article })
 
-  return fetch(url, { method, headers, body }).then(res => res.json())
+  return axios.post(url, { headers, data: article })
 }
 
-export const update = async (apiKey: string, article: Article) => {
+export const update = async (apiKey: string, article: DevArticle): Promise<DevArticle> => {
   const url = `${apiUrl}/articles/${article.id}`
-  const method = 'put'
   const headers = buildHeaders(apiKey)
-  const body = JSON.stringify({ article })
 
-  return fetch(url, { method, headers, body }).then(res => res.json())
+  return axios.put(url, { headers, data: article })
 }
 
 export default {
