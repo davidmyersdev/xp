@@ -5,7 +5,7 @@
   "main": "./dist/cjs/index.js",
   "module": "./dist/es/index.js",
   "browser": "./dist/iife/index.js",
-  "repository": "https://github.com/writewithocto/tentacles.git",
+  "repository": "https://github.com/writewithocto/arms.git",
   "author": "David R. Myers <davidrmyersii@gmail.com>",
   "license": "MIT",
   "scripts": {
