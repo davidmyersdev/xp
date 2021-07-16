@@ -10,7 +10,7 @@ const arms = (options: ArmsOptions) => {
       if (options.devApiKey) {
         const devResponse = await create(options.devApiKey, to(article))
 
-        response.dev = from(devResponse)
+        response.dev = from(devResponse.data)
       }
 
       return response
@@ -21,7 +21,7 @@ const arms = (options: ArmsOptions) => {
       if (options.devApiKey) {
         const devResponse = await update(options.devApiKey, to(article))
 
-        response.dev = from(devResponse)
+        response.dev = from(devResponse.data)
       }
 
       return response

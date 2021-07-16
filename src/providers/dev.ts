@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { DevArticle } from '../types/arms'
 
 const apiUrl = 'https://dev.to/api'
@@ -9,18 +9,18 @@ const buildHeaders = (apiKey: string) => {
   }
 }
 
-export const create = async (apiKey: string, article: DevArticle): Promise<DevArticle> => {
+export const create = async (apiKey: string, article: DevArticle): Promise<AxiosResponse<DevArticle>> => {
   const url = `${apiUrl}/articles`
   const headers = buildHeaders(apiKey)
 
-  return axios.post(url, { article }, { headers })
+  return axios.post<DevArticle>(url, { article }, { headers })
 }
 
-export const update = async (apiKey: string, article: DevArticle): Promise<DevArticle> => {
+export const update = async (apiKey: string, article: DevArticle): Promise<AxiosResponse<DevArticle>> => {
   const url = `${apiUrl}/articles/${article.id}`
   const headers = buildHeaders(apiKey)
 
-  return axios.put(url, { article }, { headers })
+  return axios.put<DevArticle>(url, { article }, { headers })
 }
 
 export default {
