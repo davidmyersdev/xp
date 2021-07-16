@@ -13,14 +13,14 @@ export const create = async (apiKey: string, article: DevArticle): Promise<DevAr
   const url = `${apiUrl}/articles`
   const headers = buildHeaders(apiKey)
 
-  return axios.post(url, { headers, data: article })
+  return axios.post(url, article, { headers })
 }
 
 export const update = async (apiKey: string, article: DevArticle): Promise<DevArticle> => {
   const url = `${apiUrl}/articles/${article.id}`
   const headers = buildHeaders(apiKey)
 
-  return axios.put(url, { headers, data: article })
+  return axios.put(url, article, { headers })
 }
 
 export default {
