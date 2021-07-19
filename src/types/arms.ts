@@ -13,10 +13,13 @@ export interface ArmsArticle {
 
 export interface ArmsOptions {
   devApiKey?: string,
+  hashnodeApiKey?: string,
+  hashnodePublicationId?: string,
 }
 
 export interface ArmsResponse {
   dev?: ArmsArticle,
+  hashnode?: ArmsArticle,
 }
 
 export interface DevArticle {
@@ -30,4 +33,41 @@ export interface DevArticle {
   published?: boolean,
   series?: string,
   tags?: string[],
+}
+
+export interface HashnodeArticle {
+  contentMarkdown: string,
+  title: string,
+  tags: string[],
+  id?: string,
+  isRepublished?: {
+    originalArticleURL: string,
+  },
+}
+
+export interface HashnodeTag {
+  _id: string
+  slug: string
+  name?: string
+}
+
+export interface HashnodePost {
+  _id: string,
+  contentMarkdown: string,
+  title: string,
+  coverImage?: string,
+  isActive?: boolean,
+  slug?: string,
+  tags?: HashnodeTag[]
+}
+
+export interface HashnodeResponse {
+  data: {
+    createPublicationStory: {
+      code?: number,
+      message?: string,
+      post: HashnodePost,
+      success?: boolean,
+    },
+  },
 }

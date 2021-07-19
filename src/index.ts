@@ -1,5 +1,7 @@
-import { create, update } from './providers/dev'
-import { from, to } from './adapters/dev'
+import devAdapter from './adapters/dev'
+import hashnodeAdapter from './adapters/hashnode'
+import devProvider from './providers/dev'
+import hashnodeProvider from './providers/hashnode'
 import { ArmsArticle, ArmsOptions, ArmsResponse } from './types/arms'
 
 const arms = (options: ArmsOptions) => {
@@ -8,9 +10,15 @@ const arms = (options: ArmsOptions) => {
       const response: ArmsResponse = {}
 
       if (options.devApiKey) {
-        const devResponse = await create(options.devApiKey, to(article))
+        const devResponse = await devProvider.create(options.devApiKey, devAdapter.to(article))
 
-        response.dev = from(devResponse.data)
+        response.dev = devAdapter.from(devResponse.data)
+      }
+
+      if (options.hashnodeApiKey && options.hashnodePublicationId) {
+        const hashnodeResponse = await hashnodeProvider.create(options.hashnodeApiKey, options.hashnodePublicationId, hashnodeAdapter.to(article))
+
+        response.hashnode = hashnodeAdapter.from(hashnodeResponse.data.data.createPublicationStory.post)
       }
 
       return response
@@ -19,9 +27,9 @@ const arms = (options: ArmsOptions) => {
       const response: ArmsResponse = {}
 
       if (options.devApiKey) {
-        const devResponse = await update(options.devApiKey, to(article))
+        const devResponse = await devProvider.update(options.devApiKey, devAdapter.to(article))
 
-        response.dev = from(devResponse.data)
+        response.dev = devAdapter.from(devResponse.data)
       }
 
       return response

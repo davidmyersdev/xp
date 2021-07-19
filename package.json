@@ -10,7 +10,8 @@
   "license": "MIT",
   "scripts": {
     "build": "rollup -c",
-    "serve": "rollup -c && node ./dist/es/index.js"
+    "serve": "rollup -c && node ./dist/es/index.js",
+    "test": "jest"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
