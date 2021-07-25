@@ -15,15 +15,9 @@ export default {
       dir: 'dist/es',
       format: 'es',
     },
-    {
-      dir: 'dist/iife',
-      format: 'iife',
-      globals: {},
-      name: 'RollupTypeScriptBabel',
-    }
   ],
   plugins: [
-    resolve({ extensions: ['.ts'] }),
+    resolve({ extensions: ['.js', '.ts'] }),
     commonjs(),
     json(),
     babel({ extensions: ['.ts'], babelHelpers: 'runtime' }),

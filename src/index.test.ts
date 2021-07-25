@@ -1,6 +1,15 @@
 import axios, { AxiosResponse } from 'axios'
 import arms from './index'
+import { MediumArticleResponse, MediumAuthorIdResponse } from './providers/medium/types'
 import { DevArticle, HashnodeResponse } from './types/arms'
+
+type RequestMethod = 'get' | 'post' | 'put' | 'patch' | 'delete'
+
+interface MockRequest {
+  data: any, // TODO: Look into using generics here.
+  method: RequestMethod,
+  urlRegex: RegExp,
+}
 
 jest.mock('axios')
 
@@ -12,11 +21,13 @@ const article = {
 }
 
 test('creates an article on dev.to', async () => {
-  mockPost({
-    id: article.id,
-    title: article.title,
-    body_markdown: article.content,
-  } as DevArticle)
+  mockApi([
+    buildMockResponse<DevArticle>('post', /.+\/articles$/, {
+      id: article.id,
+      title: article.title,
+      body_markdown: article.content,
+    })
+  ])
 
   const instance = arms({ devApiKey: 'fake' })
   const response = await instance.create(article)
@@ -27,11 +38,13 @@ test('creates an article on dev.to', async () => {
 })
 
 test('updates an article on dev.to', async () => {
-  mockPut({
-    id: article.id,
-    title: article.title,
-    body_markdown: article.content,
-  } as DevArticle)
+  mockApi([
+    buildMockResponse<DevArticle>('put', /.+\/articles\/.+$/, {
+      id: article.id,
+      title: article.title,
+      body_markdown: article.content,
+    })
+  ])
 
   const instance = arms({ devApiKey: 'fake' })
   const response = await instance.update(article)
@@ -42,17 +55,19 @@ test('updates an article on dev.to', async () => {
 })
 
 test('creates an article on hashnode.com', async () => {
-  mockPost({
-    data: {
-      createPublicationStory: {
-        post: {
-          _id: article.id,
-          title: article.title,
-          contentMarkdown: article.content,
+  mockApi([
+    buildMockResponse<HashnodeResponse>('post', /.*\/articles$/, {
+      data: {
+        createPublicationStory: {
+          post: {
+            _id: article.id,
+            title: article.title,
+            contentMarkdown: article.content,
+          },
         },
       },
-    },
-  } as HashnodeResponse)
+    })
+  ])
 
   const instance = arms({ hashnodeApiKey: 'fake', hashnodePublicationId: 'fake' })
   const response = await instance.create(article)
@@ -62,16 +77,57 @@ test('creates an article on hashnode.com', async () => {
   expect(response.hashnode?.content).toEqual(article.content)
 })
 
-const mockAxiosResponse = (data: object): AxiosResponse => {
+test('creates an article on medium.com', async () => {
+  mockApi([
+    buildMockResponse<MediumAuthorIdResponse>('get', /.*\/me$/, {
+      data: {
+        id: 'authorId',
+      },
+    }),
+    buildMockResponse<MediumArticleResponse>('post', /.*\/users\/.*\/posts$/, {
+      data: {
+        id: article.id,
+        title: article.title,
+      },
+    }),
+  ])
+
+  const instance = arms({ mediumApiKey: 'fake' })
+  const response = await instance.create(article)
+
+  expect(response.medium?.id).toEqual(article.id)
+  expect(response.medium?.title).toEqual(article.title)
+  expect(response.medium?.content).toEqual(article.content)
+})
+
+const mockAxiosResponse = <T>(data: T): AxiosResponse<T> => {
   return {
     data,
   } as AxiosResponse
 }
 
-const mockPost = (data: object) => {
-  mockedAxios.post.mockResolvedValue(mockAxiosResponse(data))
+const buildMockResponse = <T>(method: RequestMethod, urlRegex: RegExp, data: T) => {
+  return {
+    method,
+    urlRegex,
+    data,
+  }
 }
 
-const mockPut = (data: object) => {
-  mockedAxios.put.mockResolvedValue(mockAxiosResponse(data))
+const mockImplementation = (method: RequestMethod, requests: MockRequest[]) => {
+  return async (url: string): Promise<AxiosResponse | undefined> => {
+    const match = requests.find(route => route.method === method && route.urlRegex.test(url))
+
+    if (match) {
+      return mockAxiosResponse(match.data)
+    }
+  }
+}
+
+const mockApi = (requests: MockRequest[]) => {
+  mockedAxios.get.mockImplementation(mockImplementation('get', requests))
+  mockedAxios.post.mockImplementation(mockImplementation('post', requests))
+  mockedAxios.put.mockImplementation(mockImplementation('put', requests))
+  mockedAxios.patch.mockImplementation(mockImplementation('patch', requests))
+  mockedAxios.delete.mockImplementation(mockImplementation('delete', requests))
 }

@@ -15,11 +15,13 @@ export interface ArmsOptions {
   devApiKey?: string,
   hashnodeApiKey?: string,
   hashnodePublicationId?: string,
+  mediumApiKey?: string,
 }
 
 export interface ArmsResponse {
   dev?: ArmsArticle,
   hashnode?: ArmsArticle,
+  medium?: ArmsArticle,
 }
 
 export interface DevArticle {
