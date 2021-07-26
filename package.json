@@ -1,6 +1,6 @@
 {
   "name": "@writewithocto/arms",
-  "version": "v0.2.4",
+  "version": "v0.2.5",
   "description": "A JavaScript library for cross-posting markdown files to various platforms",
   "main": "./dist/cjs/index.js",
   "module": "./dist/es/index.js",
