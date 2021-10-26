@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
-import { DevArticle } from '../types/arms'
+import { DevArticle } from './types'
 
 const apiUrl = 'https://dev.to/api'
 const buildHeaders = (apiKey: string) => {

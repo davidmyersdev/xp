@@ -1,7 +1,8 @@
 import axios, { AxiosResponse } from 'axios'
-import arms from './index'
+import xp from './index'
+import { DevArticle } from './providers/dev/types'
+import { HashnodeResponse } from './providers/hashnode/types'
 import { MediumArticleResponse, MediumAuthorIdResponse } from './providers/medium/types'
-import { DevArticle, HashnodeResponse } from './types/arms'
 
 type RequestMethod = 'get' | 'post' | 'put' | 'patch' | 'delete'
 
@@ -29,7 +30,7 @@ test('creates an article on dev.to', async () => {
     })
   ])
 
-  const instance = arms({ devApiKey: 'fake' })
+  const instance = xp({ dev: { apiKey: 'fake' } })
   const response = await instance.create(article)
 
   expect(response.dev?.id).toEqual(article.id)
@@ -46,7 +47,7 @@ test('updates an article on dev.to', async () => {
     })
   ])
 
-  const instance = arms({ devApiKey: 'fake' })
+  const instance = xp({ dev: { apiKey: 'fake' } })
   const response = await instance.update(article)
 
   expect(response.dev?.id).toEqual(article.id)
@@ -69,7 +70,7 @@ test('creates an article on hashnode.com', async () => {
     })
   ])
 
-  const instance = arms({ hashnodeApiKey: 'fake', hashnodePublicationId: 'fake' })
+  const instance = xp({ hashnode: { apiKey: 'fake', publicationId: 'fake' } })
   const response = await instance.create(article)
 
   expect(response.hashnode?.id).toEqual(article.id)
@@ -92,7 +93,7 @@ test('creates an article on medium.com', async () => {
     }),
   ])
 
-  const instance = arms({ mediumApiKey: 'fake' })
+  const instance = xp({ medium: { apiKey: 'fake' } })
   const response = await instance.create(article)
 
   expect(response.medium?.id).toEqual(article.id)

@@ -1,10 +1,22 @@
 {
-  "name": "@writewithocto/arms",
-  "version": "v0.2.5",
-  "description": "A JavaScript library for cross-posting markdown files to various platforms",
+  "name": "@writewithocto/xp",
+  "version": "v0.2.6",
+  "description": "A flexible TypeScript library for publishing Markdown files to dev.to, hashnode.com, medium.com, and more.",
+  "keywords": [
+    "blog",
+    "cross-posting",
+    "cross-publishing",
+    "dev",
+    "hashnode",
+    "markdown",
+    "medium",
+    "octo",
+    "publishing",
+    "typescript"
+  ],
   "main": "./dist/cjs/index.js",
   "module": "./dist/es/index.js",
-  "repository": "https://github.com/writewithocto/arms.git",
+  "repository": "https://github.com/writewithocto/xp.git",
   "author": "David R. Myers <davidrmyersii@gmail.com>",
   "license": "MIT",
   "scripts": {

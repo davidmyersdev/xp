@@ -1,40 +1,32 @@
-import devAdapter from './adapters/dev'
-import hashnodeAdapter from './adapters/hashnode'
-import devProvider from './providers/dev'
-import hashnodeProvider from './providers/hashnode'
+import dev from './providers/dev'
+import hashnode from './providers/hashnode'
 import medium from './providers/medium'
-import { ArmsArticle, ArmsOptions, ArmsResponse } from './types/arms'
+import { XpArticle, XpOptions, XpResponse } from './types/xp'
 
-const arms = (options: ArmsOptions) => {
+const xp = (options: XpOptions) => {
   return {
-    async create(article: ArmsArticle) {
-      const response: ArmsResponse = {}
+    async create(article: XpArticle) {
+      const response: XpResponse = {}
 
-      if (options.devApiKey) {
-        const devResponse = await devProvider.create(options.devApiKey, devAdapter.to(article))
-
-        response.dev = devAdapter.from(devResponse.data)
+      if (options.dev) {
+        response.dev = await dev.create(options.dev, article)
       }
 
-      if (options.hashnodeApiKey && options.hashnodePublicationId) {
-        const hashnodeResponse = await hashnodeProvider.create(options.hashnodeApiKey, options.hashnodePublicationId, hashnodeAdapter.to(article))
-
-        response.hashnode = hashnodeAdapter.from(hashnodeResponse.data.data.createPublicationStory.post)
+      if (options.hashnode) {
+        response.hashnode = await hashnode.create(options.hashnode, article)
       }
 
-      if (options.mediumApiKey) {
-        response.medium = await medium.create(options, article)
+      if (options.medium) {
+        response.medium = await medium.create(options.medium, article)
       }
 
       return response
     },
-    async update(article: ArmsArticle) {
-      const response: ArmsResponse = {}
+    async update(article: XpArticle) {
+      const response: XpResponse = {}
 
-      if (options.devApiKey) {
-        const devResponse = await devProvider.update(options.devApiKey, devAdapter.to(article))
-
-        response.dev = devAdapter.from(devResponse.data)
+      if (options.dev) {
+        response.dev = await dev.update(options.dev, article)
       }
 
       return response
@@ -42,4 +34,4 @@ const arms = (options: ArmsOptions) => {
   }
 }
 
-export default arms
+export default xp

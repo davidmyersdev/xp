@@ -1,6 +1,7 @@
-import { ArmsArticle, DevArticle } from '../types/arms'
+import { XpArticle } from '../../types/xp'
+import { DevArticle } from './types'
 
-export const from = (article: DevArticle): ArmsArticle => {
+export const from = (article: DevArticle): XpArticle => {
   return {
     content: article.body_markdown,
     title: article.title,
@@ -15,7 +16,7 @@ export const from = (article: DevArticle): ArmsArticle => {
   }
 }
 
-export const to = (article: ArmsArticle): DevArticle => {
+export const to = (article: XpArticle): DevArticle => {
   return {
     body_markdown: article.content,
     title: article.title,

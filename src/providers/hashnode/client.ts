@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
-import { HashnodeArticle, HashnodeResponse } from '../types/arms'
+import { HashnodeArticle, HashnodeResponse } from './types'
 
 const apiUrl = 'https://api.hashnode.com'
 const buildHeaders = (apiKey: string) => {

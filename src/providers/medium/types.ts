@@ -22,3 +22,7 @@ export interface MediumAuthorIdResponse {
     id: string,
   },
 }
+
+export interface MediumOptions {
+  apiKey: string,
+}

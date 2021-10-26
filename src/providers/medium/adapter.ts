@@ -1,7 +1,7 @@
 import { MediumArticle } from './types'
-import { ArmsArticle } from '../../types/arms'
+import { XpArticle } from '../../types/xp'
 
-export const from = (article: MediumArticle): ArmsArticle => {
+export const from = (article: MediumArticle): XpArticle => {
   return {
     id: article.id,
     canonicalUrl: article.canonicalUrl,
@@ -12,7 +12,7 @@ export const from = (article: MediumArticle): ArmsArticle => {
   }
 }
 
-export const to = (article: ArmsArticle): MediumArticle => {
+export const to = (article: XpArticle): MediumArticle => {
   return {
     id: article.id,
     canonicalUrl: article.canonicalUrl,
