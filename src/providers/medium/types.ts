@@ -1,9 +1,9 @@
 export interface MediumArticle {
   title: string,
+  content: string,
   id?: string,
   authorId?: string,
   canonicalUrl?: string,
-  content?: string,
   contentFormat?: string,
   license?: string,
   licenseUrl?: string,
@@ -14,7 +14,20 @@ export interface MediumArticle {
 }
 
 export interface MediumArticleResponse {
-  data: MediumArticle,
+  data: {
+    title: string,
+    content?: string,
+    id?: string,
+    authorId?: string,
+    canonicalUrl?: string,
+    contentFormat?: string,
+    license?: string,
+    licenseUrl?: string,
+    publishStatus?: string,
+    publishedAt?: number,
+    tags?: string[],
+    url?: string,
+  },
 }
 
 export interface MediumAuthorIdResponse {
